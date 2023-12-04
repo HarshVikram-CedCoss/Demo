@@ -80,7 +80,7 @@ const Body = () => {
               {filterResturants.map((restaurant: any) => (
                 <Link
                   key={restaurant?.info.id}
-                  to={"/restaurants/" + restaurant?.info.id}
+                  to={"/resturants/" + restaurant?.info.id}
                 >
                   {restaurant?.info.promoted ? (
                     <Hotels resData={restaurant?.info} />

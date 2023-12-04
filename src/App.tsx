@@ -4,6 +4,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import NoPageFound from "./components/NoPageFound";
 import Body from "./components/Body";
+import Resturants from "./components/Resturants";
 
 function App() {
   const routes = [
@@ -18,6 +19,10 @@ function App() {
     {
       path: "/contact",
       element: <Contact />,
+    },
+    {
+      path: "/resturants/:resId",
+      element: <Resturants />,
     },
     {
       path: "/*",
