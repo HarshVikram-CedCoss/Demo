@@ -4,6 +4,7 @@ import Hotels from "./Hotels";
 import Skeleton from "./Skeleton";
 const Body = () => {
   const [resturantsList, setresturantsList] = useState([]);
+  const [searchtext, setSearchtext] = useState("");
   const fetchData = async () => {
     const data = await fetch(
       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999"
@@ -16,6 +17,18 @@ const Body = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  // handle click event
+
+  const handleClick = () => {
+    if (searchtext === "") {
+      alert("please enter hotel name");
+      return;
+    }
+    const main_Data = resturantsList.filter((data: any) =>
+      data.info.name.toLowerCase().includes(searchtext.toLowerCase())
+    );
+    setresturantsList(main_Data);
+  };
   console.log(resturantsList.length);
 
   return (
@@ -31,8 +44,15 @@ const Body = () => {
                 <input
                   type="text"
                   className="border border-solid border- red"
+                  value={searchtext}
+                  onChange={(e) => {
+                    setSearchtext(e.target.value);
+                  }}
                 />
-                <button className="px-4 py-2 bg-green-100 m-4 rounded-lg">
+                <button
+                  className="px-2 py-2 bg-green-100 m-3 rounded-lg"
+                  onClick={handleClick}
+                >
                   Search
                 </button>
               </div>
