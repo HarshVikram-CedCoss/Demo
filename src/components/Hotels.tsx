@@ -1,7 +1,6 @@
 import { CDN_URL } from "../Utilities/Constant";
 
 const Hotels = (props: any) => {
-  console.log(props, "props");
   return (
     <div
       data-testid="resCard"
