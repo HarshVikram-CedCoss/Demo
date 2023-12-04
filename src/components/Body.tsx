@@ -2,8 +2,10 @@ import Header from "./Header";
 import { useEffect, useState } from "react";
 import Hotels from "./Hotels";
 import Skeleton from "./Skeleton";
+import { Link } from "react-router-dom";
 const Body = () => {
   const [resturantsList, setresturantsList] = useState([]);
+  const [filterResturants, setFilterResturants] = useState([]);
   const [searchtext, setSearchtext] = useState("");
   const fetchData = async () => {
     const data = await fetch(
@@ -11,6 +13,9 @@ const Body = () => {
     );
     const json = await data.json();
     setresturantsList(
+      json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+    setFilterResturants(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
@@ -27,7 +32,7 @@ const Body = () => {
     const main_Data = resturantsList.filter((data: any) =>
       data.info.name.toLowerCase().includes(searchtext.toLowerCase())
     );
-    setresturantsList(main_Data);
+    setFilterResturants(main_Data);
   };
   console.log(resturantsList.length);
 
@@ -43,7 +48,8 @@ const Body = () => {
               <div className="search m-4 p-4">
                 <input
                   type="text"
-                  className="border border-solid border- red"
+                  className="border border-solid border- yellow"
+                  placeholder="Enter Hotel Name"
                   value={searchtext}
                   onChange={(e) => {
                     setSearchtext(e.target.value);
@@ -63,7 +69,7 @@ const Body = () => {
                     const filteredList = resturantsList.filter(
                       (res: any) => res.info.avgRating > 4
                     );
-                    setresturantsList(filteredList);
+                    setFilterResturants(filteredList);
                   }}
                 >
                   Top Rated Restaurants
@@ -71,8 +77,17 @@ const Body = () => {
               </div>
             </div>
             <div className="flex flex-wrap">
-              {resturantsList.map((restaurant: any) => (
-                <Hotels resData={restaurant?.info} />
+              {filterResturants.map((restaurant: any) => (
+                <Link
+                  key={restaurant?.info.id}
+                  to={"/restaurants/" + restaurant?.info.id}
+                >
+                  {restaurant?.info.promoted ? (
+                    <Hotels resData={restaurant?.info} />
+                  ) : (
+                    <Hotels resData={restaurant?.info} />
+                  )}
+                </Link>
               ))}
             </div>
           </>
