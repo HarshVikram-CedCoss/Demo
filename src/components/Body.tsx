@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import Hotels from "./Hotels";
 import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
+import { API } from "../Utilities/Constant";
 const Body = () => {
   const [resturantsList, setresturantsList] = useState([]);
   const [filterResturants, setFilterResturants] = useState([]);
   const [searchtext, setSearchtext] = useState("");
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999"
-    );
+    const data = await fetch(API);
     const json = await data.json();
     setresturantsList(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
