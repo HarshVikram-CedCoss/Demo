@@ -6,17 +6,15 @@ import { Link } from "react-router-dom";
 import { API } from "../Utilities/Constant";
 import useOnlineStatus from "../Utilities/useOnlineStatus";
 import { NoInternet } from "./Svg/Svg";
+import useResturantlist from "../Utilities/useResturantlist";
 const Body = () => {
-  const [resturantsList, setresturantsList] = useState([]);
   const [filterResturants, setFilterResturants] = useState([]);
   const [searchtext, setSearchtext] = useState("");
   const isUserOnline = useOnlineStatus();
+  const resturantsList = useResturantlist();
   const fetchData = async () => {
     const data = await fetch(API);
     const json = await data.json();
-    setresturantsList(
-      json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
     setFilterResturants(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
