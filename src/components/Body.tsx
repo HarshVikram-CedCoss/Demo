@@ -4,10 +4,13 @@ import Hotels from "./Hotels";
 import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
 import { API } from "../Utilities/Constant";
+import useOnlineStatus from "../Utilities/useOnlineStatus";
+import { NoInternet } from "./Svg/Svg";
 const Body = () => {
   const [resturantsList, setresturantsList] = useState([]);
   const [filterResturants, setFilterResturants] = useState([]);
   const [searchtext, setSearchtext] = useState("");
+  const isUserOnline = useOnlineStatus();
   const fetchData = async () => {
     const data = await fetch(API);
     const json = await data.json();
@@ -34,6 +37,16 @@ const Body = () => {
     setFilterResturants(main_Data);
   };
   console.log(resturantsList.length);
+
+  // if the user is offline
+  if (!isUserOnline) {
+    return (
+      <>
+        {NoInternet}
+        <h2>Please turn on your internet to use the App.</h2>
+      </>
+    );
+  }
 
   return (
     <>
