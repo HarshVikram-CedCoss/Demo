@@ -1,6 +1,6 @@
 import Header from "./Header";
 import { useEffect, useState } from "react";
-import Hotels from "./Hotels";
+import Hotels, { withPromtedLabel } from "./Hotels";
 import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
 import { API } from "../Utilities/Constant";
@@ -12,13 +12,18 @@ const Body = () => {
   const [searchtext, setSearchtext] = useState("");
   const isUserOnline = useOnlineStatus();
   const resturantsList = useResturantlist();
+
+  // fetch the hotels name
   const fetchData = async () => {
     const data = await fetch(API);
     const json = await data.json();
+    console.log(json);
     setFilterResturants(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
+  const Promotedlabel = withPromtedLabel(Hotels);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -55,10 +60,10 @@ const Body = () => {
         ) : (
           <>
             <div className="filter flex">
-              <div className="search m-4 p-4">
+              <div className="search  m-4">
                 <input
                   type="text"
-                  className="border border-solid border- yellow"
+                  className="border border-solid px-4 py-2 border- yellow"
                   placeholder="Enter Hotel Name"
                   value={searchtext}
                   onChange={(e) => {
@@ -88,12 +93,9 @@ const Body = () => {
             </div>
             <div className="flex flex-wrap">
               {filterResturants.map((restaurant: any) => (
-                <Link
-                  key={restaurant?.info.id}
-                  to={"/resturants/" + restaurant?.info.id}
-                >
+                <Link to={"/resturants/" + restaurant?.info.id}>
                   {restaurant?.info.promoted ? (
-                    <Hotels resData={restaurant?.info} />
+                    <Promotedlabel resData={restaurant?.info} />
                   ) : (
                     <Hotels resData={restaurant?.info} />
                   )}
