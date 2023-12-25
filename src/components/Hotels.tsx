@@ -18,6 +18,8 @@ const Hotels = (props: any) => {
     </div>
   );
 };
+
+// To Show the Promoted Label with the help of the HOC.
 export const withPromtedLabel = (RestaurantCard: any) => {
   return (props: any) => {
     return (
