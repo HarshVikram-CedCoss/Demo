@@ -5,10 +5,6 @@ import Skeleton from "./Skeleton";
 const Resturants = () => {
   const { resId } = useParams();
   const resturant_Data: any = useResturant(resId);
-  console.log(
-    resturant_Data?.cards[0]?.card?.card?.imageGridCards?.info?.[0].action.text,
-    "card"
-  );
   const name =
     resturant_Data?.cards[0]?.card?.card?.imageGridCards?.info?.[0].action.text;
   const message =
