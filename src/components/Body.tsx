@@ -44,10 +44,10 @@ const Body = () => {
   // if the user is offline
   if (!isUserOnline) {
     return (
-      <>
+      <div className="flex p-2">
         {NoInternet}
         <h2>Please turn on your internet to use the App.</h2>
-      </>
+      </div>
     );
   }
 
