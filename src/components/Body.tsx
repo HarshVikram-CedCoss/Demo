@@ -1,5 +1,5 @@
 import Header from "./Header";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Hotels, { withPromtedLabel } from "./Hotels";
 import Skeleton from "./Skeleton";
 import { Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import { API } from "../Utilities/Constant";
 import useOnlineStatus from "../Utilities/useOnlineStatus";
 import { NoInternet } from "./Svg/Svg";
 import useResturantlist from "../Utilities/useResturantlist";
+import UserContext from "../Utilities/UserContext";
 const Body = () => {
   const [filterResturants, setFilterResturants] = useState([]);
   const [searchtext, setSearchtext] = useState("");
@@ -17,7 +18,6 @@ const Body = () => {
   const fetchData = async () => {
     const data = await fetch(API);
     const json = await data.json();
-    console.log(json);
     setFilterResturants(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
@@ -39,15 +39,15 @@ const Body = () => {
     );
     setFilterResturants(main_Data);
   };
-  console.log(resturantsList.length);
 
+  const { loggedInUser, setIsUser } = useContext<any>(UserContext);
   // if the user is offline
   if (!isUserOnline) {
     return (
-      <>
+      <div className="flex p-2">
         {NoInternet}
         <h2>Please turn on your internet to use the App.</h2>
-      </>
+      </div>
     );
   }
 
@@ -90,10 +90,23 @@ const Body = () => {
                   Top Rated Restaurants
                 </button>
               </div>
+              <div className="search m-4 p-4 flex items-center">
+                <label>Enter Name : </label>
+                <input
+                  className="border border-black"
+                  value={loggedInUser}
+                  onChange={(e) => {
+                    setIsUser(e.target.value);
+                  }}
+                />
+              </div>
             </div>
             <div className="flex flex-wrap">
-              {filterResturants.map((restaurant: any) => (
-                <Link to={"/resturants/" + restaurant?.info.id}>
+              {filterResturants.map((restaurant: any, key: number) => (
+                <Link
+                  to={"/resturants/" + restaurant?.info.id}
+                  key={restaurant.info.id}
+                >
                   {restaurant?.info.promoted ? (
                     <Promotedlabel resData={restaurant?.info} />
                   ) : (
