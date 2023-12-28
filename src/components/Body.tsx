@@ -13,13 +13,15 @@ const Body = () => {
   const [searchtext, setSearchtext] = useState("");
   const isUserOnline = useOnlineStatus();
   const resturantsList = useResturantlist();
+  const { loggedInUser, setIsUser } = useContext<any>(UserContext);
 
+  console.log(resturantsList, "list");
   // fetch the hotels name
   const fetchData = async () => {
     const data = await fetch(API);
     const json = await data.json();
     setFilterResturants(
-      json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
   const Promotedlabel = withPromtedLabel(Hotels);
@@ -39,8 +41,6 @@ const Body = () => {
     );
     setFilterResturants(main_Data);
   };
-
-  const { loggedInUser, setIsUser } = useContext<any>(UserContext);
   // if the user is offline
   if (!isUserOnline) {
     return (
@@ -55,7 +55,7 @@ const Body = () => {
     <>
       <Header />
       <div className="body">
-        {resturantsList.length === 0 ? (
+        {Object.keys(resturantsList)?.length === 0 ? (
           <Skeleton />
         ) : (
           <>
@@ -102,7 +102,7 @@ const Body = () => {
               </div>
             </div>
             <div className="flex flex-wrap">
-              {filterResturants.map((restaurant: any, key: number) => (
+              {filterResturants?.map((restaurant: any) => (
                 <Link
                   to={"/resturants/" + restaurant?.info.id}
                   key={restaurant.info.id}
